@@ -1,6 +1,6 @@
 pandas
 numpy
 tensorflow
-trnasformers
+transformers
 pytorch
 torch
