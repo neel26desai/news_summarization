@@ -3,6 +3,16 @@ from transformers import pipeline
 from transformers import T5ForConditionalGeneration, AutoTokenizer
 import json
 import re
+import logging
+# # Create a file handler
+# handler = logging.FileHandler('my_log.txt')
+# # Create a logging format
+# formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+# # Add the handler to the logger
+# logger = logging.getLogger(__name__)
+# logger.addHandler(handler)
+# # Set the logging level
+# app.logger.setLevel(logging.INFO)
 
 app = Flask(__name__)
 
@@ -11,10 +21,22 @@ def remove_tags(text):
     pattern = r'<[^>]*>'
     return re.sub(pattern, '', text)
 
+@app.before_request
+def before_request():
+    global model, tokenizer
+    app.logger.info('Before request')
+    app.logger.info(request.headers)
+    #app.logger.info(request.get_json())
+    global model, tokenizer
+    model = T5ForConditionalGeneration.from_pretrained('neel26d/newstuned_t5_summarizer')
+    tokenizer = AutoTokenizer.from_pretrained('neel26d/newstuned_t5_summarizer')
+    app.logger.info("Model loaded and ready to use")
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        print('Request recived')
+        app.logger.info('Request recived')
         # Extract data from the request
         data = request.get_json(force=True)
         input_text = data["data"]
@@ -31,14 +53,15 @@ def predict():
         return jsonify(result)
 
     except Exception as e:
-        print(f"Error occurred: {e}")
+        app.logger.exception(f"Error occurred: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    global model, tokenizer
+    #global model, tokenizer
     # Initialize the model
     #model = pipeline(model="neel26d/newstuned_t5_summarizer")
-    model = T5ForConditionalGeneration.from_pretrained('neel26d/newstuned_t5_summarizer')
-    tokenizer = AutoTokenizer.from_pretrained('neel26d/newstuned_t5_summarizer')
-    print("Model loaded and ready to use")
+    #model = T5ForConditionalGeneration.from_pretrained('neel26d/newstuned_t5_summarizer')
+    #tokenizer = AutoTokenizer.from_pretrained('neel26d/newstuned_t5_summarizer')
+    #app.logger.info("Model loaded and ready to use")
     app.run(debug=True,host='0.0.0.0',port=80)
+
