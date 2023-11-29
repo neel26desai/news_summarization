@@ -1,0 +1,1 @@
+sys_prompt = "You will be provided with news content and you are expected to provide consize, correct and brief summary about the same."

@@ -1,0 +1,12 @@
+Article: 
+Summary: 
+User Response: yes
+
+Article: 
+Summary: 
+User Response: no
+
+Article: 
+Summary: 
+User Response: yes
+
