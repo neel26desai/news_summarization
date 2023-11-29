@@ -3,7 +3,7 @@ import json
 
 # URL of your Flask server's endpoint (replace with your actual URL)
 url = "http://20.163.29.17:80/predict"
-
+# url = "http://127.0.0.1:80/predict"
 # The data you want to send for prediction
 # Replace this with the actual data you want to send
 data = {
