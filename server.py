@@ -28,7 +28,7 @@ def before_request():
     app.logger.info(request.headers)
     #app.logger.info(request.get_json())
     global model, tokenizer
-    model = T5ForConditionalGeneration.from_pretrained('neel26d/newstuned_t5_summarizer')
+    model = T5ForConditionalGeneration.from_pretrained('neel26d/newstuned_t5_summarizer',cache_dir='./model')
     tokenizer = AutoTokenizer.from_pretrained('neel26d/newstuned_t5_summarizer')
     app.logger.info("Model loaded and ready to use")
 
