@@ -24,18 +24,69 @@
 <body>
     <div class="container">
         <div class="card">
-            <!-- Card Content -->
-            Your text goes here...
+            <ul>
+                {% for article in articles %}
+                    <li>
+                        <a href="#" onclick="getSummary('{{ article.url }}')">{{ article.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
-        <div class="card">
-            <!-- Card Content -->
-            Your text goes here...
+        <div class="card" id="article-summary">
+            <!-- Article summary will be displayed here -->
+        </div>
+        <div class="button-container">
+            <button onclick="submitResponse('yes')">Yes</button>
+            <button onclick="submitResponse('no')">No</button>
         </div>
     </div>
-    <div class="button-container">
-        <button>Yes</button>
-        <button>No</button>
-    </div>
+
+    <script>
+        function getSummary(articleUrl) {
+            fetch('/get_summary', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ url: articleUrl })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the generated summary
+                document.getElementById('article-summary').innerText = data.summary;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        let currentArticleContent = '';  // Variable to store the current article content
+
+        // Function to update content variable
+        function updateCurrentArticle(articleContent) {
+            currentArticleContent = articleContent;
+        }
+
+        // Function to submit the response
+        function submitResponse(userResponse) {
+            const data = {
+                article_content: currentArticleContent,
+                user_response: userResponse
+            };
+
+            fetch('/save_response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response saved:', data.message);
+                // Additional actions after saving the response (e.g., reset UI)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+    </script>
 </body>
 </html>
-    
