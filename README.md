@@ -2,6 +2,12 @@ Objective
 -
 In this project, we set out to use LLMs and NLP to take new articles and summarize them. 
 
+Important Files in this repo:
+- SummarizationHuggingFace_Training.ipynb
+- server.py
+- Dockerfile
+- proje_ui/app.py
+
 Reference:
 1. https://www.analyticsvidhya.com/blog/2023/07/build-a-text-summariser-using-llms-with-hugging-face/
 
